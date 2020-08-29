@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: 25% 25% 25%;
+  width: 30%;
+  margin-top: 50px;
+ margin-left: 36%;  
+}
+.grid-item {
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 40px;
+  height: 40px;
+  text-align: center;
+  transition: 0.2s;
+}
+.grid-item:hover{
+  background-color: #737373;
+}
+h1{
+	margin-top:5%; 
+	margin-left:40%; 
+  transition: 0.4s;
+}
+h1:hover{
+  text-decoration: underline;
+}
+
+button{
+	height: 30px;
+	width: 60px;
+}
+body{
+	background-color: darkgrey; 
+
+}
+button{
+	margin: 10px;
+	margin-left: 45%;
+}
+</style>
+</head>
+<body>
+	<h1>TIC TAC TOE</h1>
+
+
+<div class="grid-container" id="win_div">
+  <div class="grid-item" id="1" onclick="PutItem(id);"></div>
+  <div class="grid-item" id="2" onclick="PutItem(id);"></div>
+  <div class="grid-item" id="3" onclick="PutItem(id);"></div>
+  <div class="grid-item" id="4" onclick="PutItem(id);"></div>
+  <div class="grid-item" id="5" onclick="PutItem(id);"></div>
+  <div class="grid-item" id="6" onclick="PutItem(id);"></div>
+  <div class="grid-item" id="7" onclick="PutItem(id);"></div>
+  <div class="grid-item" id="8" onclick="PutItem(id);"></div>
+  <div class="grid-item" id="9" onclick="PutItem(id);"></div>
+
+</div>
+<button onclick="reset();">RESET</button> 
+<br>
+<script>
+  var flag=0;
+var temp=0;
+var move_no=0;
+function best_move(id,move_no) {
+	// body...
+	var box1=document.getElementById(1);
+	var box2=document.getElementById(2);
+	var box3=document.getElementById(3);
+	var box4=document.getElementById(4); 
+	var box5=document.getElementById(5);
+	var box6=document.getElementById(6);
+	var box7=document.getElementById(7);
+	var box8=document.getElementById(8);
+	var box9=document.getElementById(9);
+	
+	if(move_no==1) {
+		if (box5.innerHTML=='X'||box2.innerHTML=='X'||box4.innerHTML=='X'||box6.innerHTML=='X'||box8.innerHTML=='X') {
+			var rand=[1,7,3,9].sample();
+			console.log(rand);
+			put(rand);
+		}
+		else if (box1.innerHTML=='X'  || box3.innerHTML=='X' || box7.innerHTML=='X' || box9.innerHTML=='X') {
+			 box5.innerHTML='O';
+		}
+
+	}
+	else if (move_no==2) {
+		if(force_move()==false){
+		if (box5.innerHTML=='X') {
+			if (box1.innerHTML=='X') {
+			put([2,4,6,8].sample());
+			}
+			else if (box3.innerHTML=='X') {
+			put([2,4,6,8].sample());;
+			}
+			else if(box7.innerHTML=='X' ){
+			put([2,4,6,8].sample());;
+			}
+			else if(box9.innerHTML=='X'){
+			put([2,4,6,8].sample());;
+			}
+			else if(force_move()==false){
+			
+			for(var i=1;i<=9;i++){
+			if(win_move()==false && document.getElementById(i).innerHTML==''){
+				document.getElementById(i).innerHTML='O';
+				break;
+			}
+							}		
+			
+
+			}
+		}
+		else if (box5.innerHTML=='O'&&(box1.innerHTML=='X'||box3.innerHTML=='X'||box7.innerHTML=='X'||box9.innerHTML=='X')) {
+			put([2,4,6,8].sample());
+		}
+		else if(box5.innerHTML==''){
+			put([2,4,6,8].sample());
+		}
+
+	}
+
+	}
+	else if (move_no==3) {
+		if(win_move()==false && force_move()==false){
+			for(var i=1;i<=9;i++){
+			if(document.getElementById(i).innerHTML==''){
+				document.getElementById(i).innerHTML='O';
+				break;
+			}
+		}
+		}
+
+	}
+	else if (move_no>=4) {
+		if(win_move()==false && force_move()==false){
+			for(var i=1;i<=9;i++){
+			if(document.getElementById(i).innerHTML==''){
+				document.getElementById(i).innerHTML='O';
+				break;
+			}
+		}
+		}
+
+	}
+	
+}
+
+function put(id) {
+	// body...
+	switch(id){
+	case 1:document.getElementById(1).innerHTML='O';break;
+	case 2:document.getElementById(2).innerHTML='O';break;
+	case 3:document.getElementById(3).innerHTML='O';break;
+	case 4:document.getElementById(4).innerHTML='O'; break;
+	case 5:document.getElementById(5).innerHTML='O';break;
+	case 6:document.getElementById(6).innerHTML='O';break;
+	case 7:document.getElementById(7).innerHTML='O';break;
+	case 8:document.getElementById(8).innerHTML='O';break;
+	case 9:document.getElementById(9).innerHTML='O';break;
+	}
+}
+function PutItem(id) {
+	// body...
+	
+	var itm=document.getElementById(id);
+	
+	if(flag==0 && itm.innerHTML==''){
+	itm.innerHTML='X';
+	flag=1;
+	}
+	if (flag==1){
+	move_no++;
+	best_move(id,move_no);	
+	flag=0;
+	}
+	if(check_comb()=='X'){
+		alert("PLAYER 1 WINS!") ;
+		flag=0;
+	}else if(check_comb()=='O'){
+		alert("COMPUTER WINS!") ;
+		flag=0;
+	}else if(check_comb()==false){
+		alert("ITS A TIE !");
+		flag=0;
+	}
+		
+}
+
+function check_comb() {
+	// body...
+	console.log(temp);temp++;
+var combinations = [
+   [1,2,3],
+   [4,5,6],
+   [7,8,9],
+   [1,4,7],
+   [2,5,8],
+   [3,6,9],
+   [1,5,9],
+   [3,5,7],
+];
+//console.log(document.getElementById(combinations[0][2]).innerHTML);
+var ele='X';
+for(var k=0;k<2;k++){
+for(var i=0,j=0;i<8;i++){
+	if(document.getElementById(combinations[i][j]).innerHTML==ele && document.getElementById(combinations[i][j+1]).innerHTML==ele && document.getElementById(combinations[i][j+2]).innerHTML==ele)
+	{	
+		return ele;	
+	}
+  }
+  ele='O';
+}
+if(temp==15){
+	var t=0;
+	for(var i=1;i<=9;i++){
+		if (document.getElementById(i).innerHTML=='') {
+			t=1;
+		}
+	}
+	if (t==0) return false;
+}
+
+}
+
+
+function reset() {
+	// body...
+	for (var i = 1; i <= 9; i++) {
+	document.getElementById(i).innerHTML='';
+	}
+	move_no=0;
+	flag=0;
+	temp=0;
+}
+
+Array.prototype.sample = function(){
+  return this[Math.floor(Math.random()*this.length)];
+}
+
+function force_move() {
+	// body...
+var combinations = [
+   [1,2,3],
+   [4,5,6],
+   [7,8,9],
+   [1,4,7],
+   [2,5,8],
+   [3,6,9],
+   [1,5,9],
+   [3,5,7],
+];
+//console.log(document.getElementById(combinations[0][2]).innerHTML);
+var ele='X';
+for(var k=0;k<2;k++){
+for(var i=0,j=0;i<8;i++){
+	if(flag==1 && document.getElementById(combinations[i][j]).innerHTML==ele && document.getElementById(combinations[i][j+1]).innerHTML==ele && document.getElementById(combinations[i][j+2]).innerHTML=='')
+	{	
+		document.getElementById(combinations[i][j+2]).innerHTML='O';flag=0; return true;
+	}
+	else if(flag==1 && document.getElementById(combinations[i][j]).innerHTML==ele && document.getElementById(combinations[i][j+1]).innerHTML=='' && document.getElementById(combinations[i][j+2]).innerHTML==ele)
+	{	
+		 document.getElementById(combinations[i][j+1]).innerHTML='O';flag=0; return true;
+	}
+	else if(flag==1 && document.getElementById(combinations[i][j]).innerHTML=='' && document.getElementById(combinations[i][j+1]).innerHTML==ele && document.getElementById(combinations[i][j+2]).innerHTML==ele)
+	{	
+		document.getElementById(combinations[i][j]).innerHTML='O';flag=0; return true;
+	}
+  }
+  
+}
+flag=1;
+return false;
+}
+
+function win_move() {
+	// body...
+var combinations = [
+   [1,2,3],
+   [4,5,6],
+   [7,8,9],
+   [1,4,7],
+   [2,5,8],
+   [3,6,9],
+   [1,5,9],
+   [3,5,7],
+];
+//console.log(document.getElementById(combinations[0][2]).innerHTML);
+var ele='O';
+for(var k=0;k<2;k++){
+for(var i=0,j=0;i<8;i++){
+	if(flag==1 && document.getElementById(combinations[i][j]).innerHTML==ele && document.getElementById(combinations[i][j+1]).innerHTML==ele && document.getElementById(combinations[i][j+2]).innerHTML=='')
+	{	
+		document.getElementById(combinations[i][j+2]).innerHTML='O';flag=0; return true;
+	}
+	else if(flag==1 && document.getElementById(combinations[i][j]).innerHTML==ele && document.getElementById(combinations[i][j+1]).innerHTML=='' && document.getElementById(combinations[i][j+2]).innerHTML==ele)
+	{	
+		 document.getElementById(combinations[i][j+1]).innerHTML='O';flag=0; return true;
+	}
+	else if(flag==1 && document.getElementById(combinations[i][j]).innerHTML=='' && document.getElementById(combinations[i][j+1]).innerHTML==ele && document.getElementById(combinations[i][j+2]).innerHTML==ele)
+	{	
+		document.getElementById(combinations[i][j]).innerHTML='O';flag=0; return true;
+	}
+  }
+  
+}
+flag=1;
+return false;
+}
+</script>
+</body>
+</html>
+
