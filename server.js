@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express()
 const path = require('path')
-
+const PORT = process.env.PORT || 5000;
 
 app.get('/', (req,res) => {
         
@@ -19,6 +19,6 @@ app.get('/', (req,res) => {
     });
 })
 
-app.listen('5000',function(){
+app.listen(PORT,function(){
     console.log('Server is up and running')
 })
